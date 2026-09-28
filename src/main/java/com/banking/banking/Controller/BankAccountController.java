@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 
 @RestController
@@ -44,13 +45,22 @@ public class BankAccountController {
                 bankAccountService.getAllAccounts()
         );
     }
-
     @GetMapping("/{accountId}")
     public ResponseEntity<AccountResponseDTO> getAccountById(
-            @PathVariable Long accountId) {
+            @PathVariable Long accountId)
+    {
 
         return ResponseEntity.ok(
                 bankAccountService.getAccountById(accountId)
         );
     }
+    @DeleteMapping("/{accountId}")
+    public ResponseEntity<Void> deleteAccount(
+            @PathVariable Long accountId) {
+
+        bankAccountService.deleteAccount(accountId);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

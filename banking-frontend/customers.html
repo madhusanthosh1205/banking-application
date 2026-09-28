@@ -36,7 +36,8 @@
 
     <h1>Customers</h1>
 
-    <button onclick="showCustomerForm()">
+    <button id="addCustomerButton"
+     onclick="showCustomerForm()">
         Add Customer
     </button>
 
@@ -78,6 +79,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th id="actionHeader">Action</th>
         </tr>
 
         </thead>
@@ -92,6 +94,10 @@
 
 
 <script src="js/api.js"></script>
+<script>
+    requireLogin();
+</script>
+
 <script src="js/customers.js"></script>
 
 </body>

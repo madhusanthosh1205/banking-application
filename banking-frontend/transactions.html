@@ -58,6 +58,8 @@
 
     <!-- ACCOUNT -->
 
+    <div id="transactionControls">
+
     <label>Account ID</label>
 
     <br>
@@ -66,13 +68,14 @@
         type="number"
         id="accountId"
         placeholder="Enter account ID"
-          oninput="loadAccountBalance()"
+        oninput="loadAccountBalance()"
     >
 
     <br><br>
+
     <div id="accountBalance"
-     style="margin-top:15px; font-size:20px; font-weight:bold;">
-</div>
+         style="margin-top:15px; font-size:20px; font-weight:bold;">
+    </div>
 
 
     <!-- TRANSACTION TYPE -->
@@ -134,12 +137,13 @@
         Deposit / Withdraw
 
     </button>
-
+</div>
 
     <hr>
 
 
     <!-- TRANSFER -->
+<div id="transferControls">
 
     <h2>Transfer Money</h2>
 
@@ -208,7 +212,7 @@
 
     </button>
 
-
+</div>
     <hr>
 
 
@@ -258,6 +262,9 @@
 
 
 <script src="js/api.js"></script>
+<script>
+    requireLogin();
+</script>
 
 <script src="js/transactions.js"></script>
 

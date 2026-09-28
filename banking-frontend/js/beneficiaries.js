@@ -2,7 +2,7 @@ async function loadBeneficiaries() {
 
     try {
 
-        const response = await fetch(
+        const response = await apiFetch(
             `${API_BASE_URL}/beneficiaries`
         );
 
@@ -52,15 +52,21 @@ async function loadBeneficiaries() {
                     ${beneficiary.createdAt}
                 </td>
 
-                <td>
+             <td>
 
-                    <button
-                        onclick="deleteBeneficiary(${beneficiary.id})"
-                    >
-                        Delete
-                    </button>
+    ${
+        hasRole("admin") || hasRole("bank-staff")
+        ? `
+            <button
+                onclick="deleteBeneficiary(${beneficiary.id})"
+            >
+                Delete
+            </button>
+          `
+        : ""
+    }
 
-                </td>
+</td>
 
             `;
 
@@ -137,7 +143,7 @@ async function createBeneficiary() {
 
     try {
 
-        const response = await fetch(
+        const response = await apiFetch(
 
             `${API_BASE_URL}/beneficiaries`,
 
@@ -215,7 +221,7 @@ async function deleteBeneficiary(id) {
 
     try {
 
-        const response = await fetch(
+        const response = await apiFetch(
 
             `${API_BASE_URL}/beneficiaries/${id}`,
 

@@ -2,7 +2,7 @@ async function loadAccounts() {
 
     try {
 
-        const response = await fetch(
+        const response = await apiFetch(
             `${API_BASE_URL}/accounts`
         );
 
@@ -18,15 +18,33 @@ async function loadAccounts() {
 
             const row = document.createElement("tr");
 
-            row.innerHTML = `
-                <td>${account.id}</td>
-                <td>${account.accountNumber}</td>
-                <td>${account.accountType}</td>
-                <td>₹ ${account.balance}</td>
-                <td>${account.customerId}</td>
-                <td>${account.customerName}</td>
-            `;
+            if (hasRole("admin")) {
 
+    row.innerHTML = `
+        <td>${account.id}</td>
+        <td>${account.accountNumber}</td>
+        <td>${account.accountType}</td>
+        <td>₹ ${account.balance}</td>
+        <td>${account.customerId}</td>
+        <td>${account.customerName}</td>
+        <td>
+            <button onclick="deleteAccount(${account.id})">
+                Delete
+            </button>
+        </td>
+    `;
+
+} else {
+
+    row.innerHTML = `
+        <td>${account.id}</td>
+        <td>${account.accountNumber}</td>
+        <td>${account.accountType}</td>
+        <td>₹ ${account.balance}</td>
+        <td>${account.customerId}</td>
+        <td>${account.customerName}</td>
+    `;
+}
             tableBody.appendChild(row);
 
         });
@@ -79,7 +97,7 @@ async function createAccount() {
 
     try {
 
-        const response = await fetch(
+        const response = await apiFetch(
             `${API_BASE_URL}/accounts`,
             {
                 method: "POST",
@@ -128,5 +146,54 @@ async function createAccount() {
 
 }
 
+async function deleteAccount(id) {
 
+    const confirmDelete =
+        confirm("Are you sure you want to delete this account?");
+
+    if (!confirmDelete) {
+        return;
+    }
+
+    try {
+
+        const response = await apiFetch(
+            `${API_BASE_URL}/accounts/${id}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        if (!response.ok) {
+
+            const data = await response.json();
+
+            alert(
+                data.message ||
+                JSON.stringify(data)
+            );
+
+            return;
+        }
+
+        alert("Account deleted successfully!");
+
+        loadAccounts();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Unable to connect to backend");
+
+    }
+}
+if (!hasRole("admin")) {
+
+    document.getElementById("addAccountButton")
+        .style.display = "none";
+
+    document.getElementById("accountActionHeader")
+        .style.display = "none";
+}
 loadAccounts();

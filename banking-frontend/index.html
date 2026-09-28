@@ -21,6 +21,7 @@
             <a href="accounts.html">Accounts</a>
             <a href="transactions.html">Transactions</a>
             <a href="beneficiaries.html">Beneficiaries</a>
+            <button onclick="logout()">Logout</button>
         </div>
     </nav>
 
@@ -28,7 +29,10 @@
     <main class="container">
 
         <h1>Banking Dashboard</h1>
-
+<div class="user-info">
+    <h3>Welcome, <span id="username">User</span> 👋</h3>
+    <p>Role: <span id="userRole">Loading...</span></p>
+</div>
         <div class="cards">
 
             <div class="card">
@@ -49,7 +53,11 @@
         </div>
 
     </main>
-
+<script src="js/api.js"></script>
+<script>
+    requireLogin();
+</script>
+<script src="js/dashboard.js"></script>
 </body>
 
 </html>

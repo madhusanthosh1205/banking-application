@@ -73,7 +73,18 @@ public class BankAccountService {
 
         return convertToResponse(account);
     }
+    public void deleteAccount(Long id) {
 
+        BankAccount account =
+                bankAccountRepository.findById(id)
+                        .orElseThrow(() ->
+                                new AccountNotFoundException(
+                                        "Account not found with id: " + id
+                                )
+                        );
+
+        bankAccountRepository.delete(account);
+    }
     private String generateAccountNumber() {
 
         return "ACC" +
@@ -96,4 +107,5 @@ public class BankAccountService {
                 account.getCustomer().getName()
         );
     }
+
 }

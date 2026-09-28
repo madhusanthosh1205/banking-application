@@ -17,7 +17,7 @@ async function loadAccountBalance() {
 
     try {
 
-        const response = await fetch(
+        const response = await apiFetch(
             `${API_BASE_URL}/accounts/${accountId}`
         );
 
@@ -90,7 +90,7 @@ async function performTransaction() {
 
     try {
 
-        const response = await fetch(
+        const response = await apiFetch(
 
             `${API_BASE_URL}/accounts/${accountId}/transactions`,
 
@@ -145,6 +145,14 @@ async function performTransaction() {
 
         // Refresh transaction history
         loadTransactions();
+        if (!hasRole("customer")) {
+
+    document.getElementById("transactionControls")
+        .style.display = "none";
+
+    document.getElementById("transferControls")
+        .style.display = "none";
+}
 
     }
 
@@ -209,7 +217,7 @@ async function transferMoney() {
 
     try {
 
-        const response = await fetch(
+        const response = await apiFetch(
 
             `${API_BASE_URL}/accounts/${senderAccountId}/transactions/transfer`,
 
@@ -300,7 +308,7 @@ async function loadTransactions() {
 
     try {
 
-        const response = await fetch(
+        const response = await apiFetch(
 
             `${API_BASE_URL}/accounts/${accountId}/transactions`
 

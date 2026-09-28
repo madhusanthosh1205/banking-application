@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Beneficiaries</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar">
+
+    <h2>🏦 Banking App</h2>
+
+    <div>
+
+        <a href="index.html">Dashboard</a>
+
+        <a href="customers.html">
+            Customers
+        </a>
+
+        <a href="accounts.html">
+            Accounts
+        </a>
+
+        <a href="transactions.html">
+            Transactions
+        </a>
+
+        <a href="beneficiaries.html">
+            Beneficiaries
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<main class="container">
+
+    <h1>Beneficiaries</h1>
+
+    <br>
+
+
+    <button onclick="showBeneficiaryForm()">
+
+        Add Beneficiary
+
+    </button>
+
+
+    <br><br>
+
+
+    <div
+        id="beneficiaryForm"
+        style="display:none;"
+    >
+
+        <h2>Add Beneficiary</h2>
+
+        <br>
+
+
+        <label>Customer ID</label>
+
+        <br>
+
+        <input
+            type="number"
+            id="customerId"
+            placeholder="Customer ID"
+        >
+
+
+        <br><br>
+
+
+        <label>Name</label>
+
+        <br>
+
+        <input
+            type="text"
+            id="beneficiaryName"
+            placeholder="Beneficiary name"
+        >
+
+
+        <br><br>
+
+
+        <label>Account Number</label>
+
+        <br>
+
+        <input
+            type="text"
+            id="accountNumber"
+            placeholder="Account number"
+        >
+
+
+        <br><br>
+
+
+        <label>Bank Name</label>
+
+        <br>
+
+        <input
+            type="text"
+            id="bankName"
+            placeholder="Bank name"
+        >
+
+
+        <br><br>
+
+
+        <button onclick="createBeneficiary()">
+
+            Save Beneficiary
+
+        </button>
+
+    </div>
+
+
+    <br><br>
+
+
+    <h2>Beneficiary List</h2>
+
+    <br>
+
+
+    <table>
+
+        <thead>
+
+        <tr>
+
+            <th>ID</th>
+            <th>Name</th>
+            <th>Account Number</th>
+            <th>Bank Name</th>
+            <th>Customer ID</th>
+            <th>Created At</th>
+            <th>Action</th>
+
+        </tr>
+
+        </thead>
+
+
+        <tbody id="beneficiaryTableBody">
+
+        </tbody>
+
+    </table>
+
+
+</main>
+
+
+<script src="js/api.js"></script>
+
+<script src="js/beneficiaries.js"></script>
+
+
+</body>
+
+</html>

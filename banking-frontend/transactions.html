@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Transactions</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar">
+
+    <h2>🏦 Banking App</h2>
+
+    <div>
+
+        <a href="index.html">Dashboard</a>
+
+        <a href="customers.html">
+            Customers
+        </a>
+
+        <a href="accounts.html">
+            Accounts
+        </a>
+
+        <a href="transactions.html">
+            Transactions
+        </a>
+
+        <a href="beneficiaries.html">
+            Beneficiaries
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<main class="container">
+
+    <h1>Transactions</h1>
+
+    <br>
+
+
+    <!-- ACCOUNT -->
+
+    <label>Account ID</label>
+
+    <br>
+
+    <input
+        type="number"
+        id="accountId"
+        placeholder="Enter account ID"
+          oninput="loadAccountBalance()"
+    >
+
+    <br><br>
+    <div id="accountBalance"
+     style="margin-top:15px; font-size:20px; font-weight:bold;">
+</div>
+
+
+    <!-- TRANSACTION TYPE -->
+
+    <label>Transaction Type</label>
+
+    <br>
+
+    <select id="transactionType">
+
+        <option value="DEPOSIT">
+            DEPOSIT
+        </option>
+
+        <option value="WITHDRAWAL">
+            WITHDRAWAL
+        </option>
+
+    </select>
+
+
+    <br><br>
+
+
+    <!-- AMOUNT -->
+
+    <label>Amount</label>
+
+    <br>
+
+    <input
+        type="number"
+        id="amount"
+        placeholder="Enter amount"
+    >
+
+
+    <br><br>
+
+
+    <!-- DESCRIPTION -->
+
+    <label>Description</label>
+
+    <br>
+
+    <input
+        type="text"
+        id="description"
+        placeholder="Description"
+    >
+
+
+    <br><br>
+
+
+    <button onclick="performTransaction()">
+
+        Deposit / Withdraw
+
+    </button>
+
+
+    <hr>
+
+
+    <!-- TRANSFER -->
+
+    <h2>Transfer Money</h2>
+
+    <br>
+
+
+    <label>Sender Account ID</label>
+
+    <br>
+
+    <input
+        type="number"
+        id="senderAccountId"
+        placeholder="Sender account ID"
+    >
+
+
+    <br><br>
+
+
+    <label>Receiver Account ID</label>
+
+    <br>
+
+    <input
+        type="number"
+        id="receiverAccountId"
+        placeholder="Receiver account ID"
+    >
+
+
+    <br><br>
+
+
+    <label>Amount</label>
+
+    <br>
+
+    <input
+        type="number"
+        id="transferAmount"
+        placeholder="Transfer amount"
+    >
+
+
+    <br><br>
+
+
+    <label>Description</label>
+
+    <br>
+
+    <input
+        type="text"
+        id="transferDescription"
+        placeholder="Transfer description"
+    >
+
+
+    <br><br>
+
+
+    <button onclick="transferMoney()">
+
+        Transfer
+
+    </button>
+
+
+    <hr>
+
+
+    <!-- HISTORY -->
+
+    <h2>Transaction History</h2>
+
+    <br>
+
+
+    <button onclick="loadTransactions()">
+
+        Load History
+
+    </button>
+
+
+    <br><br>
+
+
+    <table>
+
+        <thead>
+
+        <tr>
+
+            <th>ID</th>
+            <th>Reference</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Description</th>
+
+        </tr>
+
+        </thead>
+
+
+        <tbody id="transactionTableBody">
+
+        </tbody>
+
+    </table>
+
+
+</main>
+
+
+<script src="js/api.js"></script>
+
+<script src="js/transactions.js"></script>
+
+
+</body>
+
+</html>

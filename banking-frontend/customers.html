@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Customers</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <h2>🏦 Banking App</h2>
+
+    <div>
+        <a href="index.html">Dashboard</a>
+        <a href="customers.html">Customers</a>
+        <a href="accounts.html">Accounts</a>
+        <a href="transactions.html">Transactions</a>
+        <a href="beneficiaries.html">Beneficiaries</a>
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <h1>Customers</h1>
+
+    <button onclick="showCustomerForm()">
+        Add Customer
+    </button>
+
+    <div id="customerForm"
+         style="display:none;">
+
+        <h2>Create Customer</h2>
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Name">
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Email">
+
+        <input
+            type="text"
+            id="phone"
+            placeholder="Phone">
+
+        <button onclick="createCustomer()">
+            Save Customer
+        </button>
+
+    </div>
+
+
+    <h2>Customer List</h2>
+
+    <table>
+
+        <thead>
+
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+        </tr>
+
+        </thead>
+
+        <tbody id="customerTableBody">
+
+        </tbody>
+
+    </table>
+
+</main>
+
+
+<script src="js/api.js"></script>
+<script src="js/customers.js"></script>
+
+</body>
+
+</html>

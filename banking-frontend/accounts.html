@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Accounts</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <h2>🏦 Banking App</h2>
+
+    <div>
+        <a href="index.html">Dashboard</a>
+        <a href="customers.html">Customers</a>
+        <a href="accounts.html">Accounts</a>
+        <a href="transactions.html">Transactions</a>
+        <a href="beneficiaries.html">Beneficiaries</a>
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <h1>Bank Accounts</h1>
+
+    <br>
+
+    <button onclick="showAccountForm()">
+        Add Account
+    </button>
+
+
+    <!-- CREATE ACCOUNT FORM -->
+
+    <div id="accountForm" style="display:none; margin-top:20px;">
+
+        <h2>Create Account</h2>
+
+        <br>
+
+        <label>Customer ID</label>
+        <br>
+
+        <input
+            type="number"
+            id="customerId"
+            placeholder="Enter customer ID"
+        >
+
+        <br><br>
+
+
+        <label>Account Type</label>
+        <br>
+
+        <select id="accountType">
+
+            <option value="SAVINGS">
+                SAVINGS
+            </option>
+
+            <option value="CURRENT">
+                CURRENT
+            </option>
+
+        </select>
+
+        <br><br>
+
+
+        <label>Initial Balance</label>
+        <br>
+
+        <input
+            type="number"
+            id="initialBalance"
+            placeholder="Enter initial balance"
+        >
+
+        <br><br>
+
+        <button onclick="createAccount()">
+            Save Account
+        </button>
+
+    </div>
+
+
+    <br><br>
+
+    <h2>Account List</h2>
+
+    <br>
+
+
+    <table>
+
+        <thead>
+
+        <tr>
+            <th>ID</th>
+            <th>Account Number</th>
+            <th>Type</th>
+            <th>Balance</th>
+            <th>Customer ID</th>
+            <th>Customer Name</th>
+        </tr>
+
+        </thead>
+
+
+        <tbody id="accountTableBody">
+
+        </tbody>
+
+    </table>
+
+</main>
+
+
+<script src="js/api.js"></script>
+<script src="js/accounts.js"></script>
+
+</body>
+</html>

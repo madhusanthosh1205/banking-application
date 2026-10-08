@@ -19,6 +19,8 @@ public class Customer {
     private String email;
 
     private String phone;
+    @Column(name = "keycloak_user_id", unique = true)
+    private String keycloakUserId;
     @OneToMany(
             mappedBy = "customer",
             cascade = CascadeType.ALL
@@ -29,7 +31,8 @@ public class Customer {
             cascade = CascadeType.ALL
     )
     private List<BankAccount> accounts = new ArrayList<>();
-
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Consent> consents = new ArrayList<>();
     // getters and setters
     public Long getId() {
         return id;
@@ -62,7 +65,15 @@ public class Customer {
         return phone;
     }
 
+
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+    public String getKeycloakUserId() {
+        return keycloakUserId;
+    }
+
+    public void setKeycloakUserId(String keycloakUserId) {
+        this.keycloakUserId = keycloakUserId;
     }
 }

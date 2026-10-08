@@ -21,7 +21,7 @@
 
 <nav class="navbar">
 
-    <h2>🏦 Banking App</h2>
+    <h2>Banking App</h2>
 
     <div>
 
@@ -42,7 +42,9 @@
         <a href="beneficiaries.html">
             Beneficiaries
         </a>
-
+<a href="consents.html">
+    Consents
+</a>
     </div>
 
 </nav>
@@ -56,163 +58,171 @@
     <br>
 
 
-    <!-- ACCOUNT -->
+    <!-- ACCOUNT SELECTION -->
 
-    <div id="transactionControls">
+    <div id="accountSelection">
 
-    <label>Account ID</label>
+        <label>Account ID</label>
 
-    <br>
+        <br>
 
-    <input
-        type="number"
-        id="accountId"
-        placeholder="Enter account ID"
-        oninput="loadAccountBalance()"
-    >
+        <input
+            type="number"
+            id="accountId"
+            placeholder="Enter account ID"
+            oninput="loadAccountBalance()"
+        >
 
-    <br><br>
+        <br><br>
 
-    <div id="accountBalance"
-         style="margin-top:15px; font-size:20px; font-weight:bold;">
+        <div
+            id="accountBalance"
+            style="margin-top:15px;
+                   font-size:20px;
+                   font-weight:bold;">
+        </div>
+
     </div>
 
 
-    <!-- TRANSACTION TYPE -->
-
-    <label>Transaction Type</label>
-
     <br>
 
-    <select id="transactionType">
 
-        <option value="DEPOSIT">
-            DEPOSIT
-        </option>
+    <!-- TRANSACTION CONTROLS -->
 
-        <option value="WITHDRAWAL">
-            WITHDRAWAL
-        </option>
+    <div id="transactionControls">
 
-    </select>
+        <h2>Deposit / Withdrawal</h2>
 
+        <br>
 
-    <br><br>
+        <label>Transaction Type</label>
 
+        <br>
 
-    <!-- AMOUNT -->
+        <select id="transactionType">
 
-    <label>Amount</label>
+            <option value="DEPOSIT">
+                DEPOSIT
+            </option>
 
-    <br>
+            <option value="WITHDRAWAL">
+                WITHDRAWAL
+            </option>
 
-    <input
-        type="number"
-        id="amount"
-        placeholder="Enter amount"
-    >
+        </select>
 
-
-    <br><br>
+        <br><br>
 
 
-    <!-- DESCRIPTION -->
+        <label>Amount</label>
 
-    <label>Description</label>
+        <br>
 
-    <br>
+        <input
+            type="number"
+            id="amount"
+            placeholder="Enter amount"
+        >
 
-    <input
-        type="text"
-        id="description"
-        placeholder="Description"
-    >
-
-
-    <br><br>
+        <br><br>
 
 
-    <button onclick="performTransaction()">
+        <label>Description</label>
 
-        Deposit / Withdraw
+        <br>
 
-    </button>
-</div>
+        <input
+            type="text"
+            id="description"
+            placeholder="Description"
+        >
+
+        <br><br>
+
+
+        <button onclick="performTransaction()">
+
+            Deposit / Withdraw
+
+        </button>
+
+    </div>
+
 
     <hr>
 
 
     <!-- TRANSFER -->
-<div id="transferControls">
 
-    <h2>Transfer Money</h2>
+    <div id="transferControls">
 
-    <br>
+        <h2>Transfer Money</h2>
 
-
-    <label>Sender Account ID</label>
-
-    <br>
-
-    <input
-        type="number"
-        id="senderAccountId"
-        placeholder="Sender account ID"
-    >
+        <br>
 
 
-    <br><br>
+        <label>Sender Account ID</label>
+
+        <br>
+
+        <input
+            type="number"
+            id="senderAccountId"
+            placeholder="Sender account ID"
+        >
+
+        <br><br>
 
 
-    <label>Receiver Account ID</label>
+        <label>Receiver Account ID</label>
 
-    <br>
+        <br>
 
-    <input
-        type="number"
-        id="receiverAccountId"
-        placeholder="Receiver account ID"
-    >
+        <input
+            type="number"
+            id="receiverAccountId"
+            placeholder="Receiver account ID"
+        >
 
-
-    <br><br>
-
-
-    <label>Amount</label>
-
-    <br>
-
-    <input
-        type="number"
-        id="transferAmount"
-        placeholder="Transfer amount"
-    >
+        <br><br>
 
 
-    <br><br>
+        <label>Amount</label>
+
+        <br>
+
+        <input
+            type="number"
+            id="transferAmount"
+            placeholder="Transfer amount"
+        >
+
+        <br><br>
 
 
-    <label>Description</label>
+        <label>Description</label>
 
-    <br>
+        <br>
 
-    <input
-        type="text"
-        id="transferDescription"
-        placeholder="Transfer description"
-    >
+        <input
+            type="text"
+            id="transferDescription"
+            placeholder="Transfer description"
+        >
+
+        <br><br>
 
 
-    <br><br>
+        <button onclick="transferMoney()">
+
+            Transfer
+
+        </button>
+
+    </div>
 
 
-    <button onclick="transferMoney()">
-
-        Transfer
-
-    </button>
-
-</div>
     <hr>
 
 
@@ -222,13 +232,11 @@
 
     <br>
 
-
     <button onclick="loadTransactions()">
 
         Load History
 
     </button>
-
 
     <br><br>
 
@@ -259,7 +267,6 @@
 
 
 </main>
-
 
 <script src="js/api.js"></script>
 <script>

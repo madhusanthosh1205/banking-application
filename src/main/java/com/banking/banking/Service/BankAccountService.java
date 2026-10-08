@@ -4,11 +4,12 @@ import com.banking.banking.Dto.AccountRequestDTO;
 import com.banking.banking.Dto.AccountResponseDTO;
 import com.banking.banking.Entity.BankAccount;
 import com.banking.banking.Entity.Customer;
-import com.banking.banking.exception.AccountNotFoundException;
-import com.banking.banking.exception.CustomerNotFoundException;
 import com.banking.banking.Repository.BankAccountRepository;
 import com.banking.banking.Repository.CustomerRepository;
+import com.banking.banking.exception.AccountNotFoundException;
+import com.banking.banking.exception.CustomerNotFoundException;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class BankAccountService {
                                         + request.getCustomerId()
                         )
                 );
-
+//bankaccount->enity name
         BankAccount account = new BankAccount();
 
         account.setAccountNumber(generateAccountNumber());
@@ -53,15 +54,38 @@ public class BankAccountService {
         return convertToResponse(savedAccount);
     }
 
-    public List<AccountResponseDTO> getAllAccounts() {
+    public List<AccountResponseDTO> getAllAccounts(
+            Authentication authentication) {
 
-        return bankAccountRepository.findAll()
+        String username =
+                authentication.getName();
+
+        boolean adminOrMaker =
+                authentication.getAuthorities()
+                        .stream()
+                        .anyMatch(authority ->
+                                authority.getAuthority().equals("ROLE_admin")
+                                        || authority.getAuthority().equals("ROLE_maker")
+                        );
+
+        if (adminOrMaker) {
+
+            return bankAccountRepository.findAll()
+                    .stream()
+                    .map(this::convertToResponse)
+                    .toList();
+        }
+
+        return bankAccountRepository
+                .findByCustomerKeycloakUserId(username)
                 .stream()
                 .map(this::convertToResponse)
                 .toList();
     }
 
-    public AccountResponseDTO getAccountById(Long id) {
+    public AccountResponseDTO getAccountById(
+            Long id,
+            Authentication authentication) {
 
         BankAccount account =
                 bankAccountRepository.findById(id)
@@ -71,8 +95,30 @@ public class BankAccountService {
                                 )
                         );
 
+        String username =
+                authentication.getName();
+
+        boolean adminOrMaker =
+                authentication.getAuthorities()
+                        .stream()
+                        .anyMatch(authority ->
+                                authority.getAuthority().equals("ROLE_admin")
+                                        || authority.getAuthority().equals("ROLE_maker")
+                        );
+
+        if (!adminOrMaker &&
+                !account.getCustomer()
+                        .getKeycloakUserId()
+                        .equals(username)) {
+
+            throw new AccountNotFoundException(
+                    "Account not found with id: " + id
+            );
+        }
+
         return convertToResponse(account);
     }
+
     public void deleteAccount(Long id) {
 
         BankAccount account =
@@ -85,14 +131,15 @@ public class BankAccountService {
 
         bankAccountRepository.delete(account);
     }
+
     private String generateAccountNumber() {
 
-        return "ACC" +
-                UUID.randomUUID()
-                        .toString()
-                        .replace("-", "")
-                        .substring(0, 10)
-                        .toUpperCase();
+        return "ACC"
+                + UUID.randomUUID()
+                .toString()
+                .replace("-", "")
+                .substring(0, 10)
+                .toUpperCase();
     }
 
     private AccountResponseDTO convertToResponse(
@@ -107,5 +154,4 @@ public class BankAccountService {
                 account.getCustomer().getName()
         );
     }
-
 }

@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: banking_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: YOUR_EXISTING_PASSWORD
+      POSTGRES_PASSWORD: Madhu@123
     ports:
       - "5433:5432"
     volumes:
@@ -18,11 +18,15 @@ services:
     ports:
       - "8081:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/banking_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/banking_db
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: YOUR_EXISTING_PASSWORD
+      SPRING_DATASOURCE_PASSWORD: Madhu@123
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://host.docker.internal:8180/realms/banking-realm/protocol/openid-connect/certs
 
+      KEYCLOAK_SERVER_URL: http://host.docker.internal:8180
+      KEYCLOAK_REALM: banking-realm
+      KEYCLOAK_ADMIN_CLIENT_ID: banking-admin
+      KEYCLOAK_ADMIN_CLIENT_SECRET: hyXhSOjFFRJQTcALPUQdiN7OvGS0dMyfR0puiXqTsfETgZNYsbtIMpqXgG1v6HMyMYsOIpQbt1eyoyY1mvmZx4
   nginx:
     image: nginx:latest
     container_name: banking-nginx

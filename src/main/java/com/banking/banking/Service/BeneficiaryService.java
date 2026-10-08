@@ -4,10 +4,12 @@ import com.banking.banking.Dto.BeneficiaryRequestDTO;
 import com.banking.banking.Dto.BeneficiaryResponseDTO;
 import com.banking.banking.Entity.Beneficiary;
 import com.banking.banking.Entity.Customer;
-import com.banking.banking.exception.BeneficiaryNotFoundException;
-import com.banking.banking.exception.CustomerNotFoundException;
 import com.banking.banking.Repository.BeneficiaryRepository;
 import com.banking.banking.Repository.CustomerRepository;
+import com.banking.banking.exception.BeneficiaryNotFoundException;
+import com.banking.banking.exception.CustomerNotFoundException;
+
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,20 +30,56 @@ public class BeneficiaryService {
     }
 
     public BeneficiaryResponseDTO createBeneficiary(
-            BeneficiaryRequestDTO request) {
+            BeneficiaryRequestDTO request,
+            Authentication authentication) {
 
-        Customer customer =
-                customerRepository.findById(request.getCustomerId())
-                        .orElseThrow(() ->
-                                new CustomerNotFoundException(
-                                        "Customer not found with id: "
-                                                + request.getCustomerId()
-                                )
+        Customer customer;
+
+        boolean isAdmin =
+                authentication.getAuthorities()
+                        .stream()
+                        .anyMatch(authority ->
+                                authority.getAuthority()
+                                        .equals("ROLE_admin")
                         );
+
+        if (isAdmin) {
+
+            customer =
+                    customerRepository.findById(
+                            request.getCustomerId()
+                    ).orElseThrow(() ->
+                            new CustomerNotFoundException(
+                                    "Customer not found with id: "
+                                            + request.getCustomerId()
+                            )
+                    );
+
+        } else {
+
+            String username = authentication.getName();
+
+            customer =
+                    customerRepository
+                            .findByKeycloakUserId(username)
+                            .orElseThrow(() ->
+                                    new CustomerNotFoundException(
+                                            "Customer not found"
+                                    )
+                            );
+
+            if (!customer.getId()
+                    .equals(request.getCustomerId())) {
+
+                throw new BeneficiaryNotFoundException(
+                        "You cannot create a beneficiary for another customer"
+                );
+            }
+        }
 
         if (beneficiaryRepository
                 .existsByCustomerIdAndAccountNumber(
-                        request.getCustomerId(),
+                        customer.getId(),
                         request.getAccountNumber())) {
 
             throw new IllegalArgumentException(
@@ -52,14 +90,20 @@ public class BeneficiaryService {
         Beneficiary beneficiary = new Beneficiary();
 
         beneficiary.setName(request.getName());
+
         beneficiary.setAccountNumber(
                 request.getAccountNumber()
         );
+
         beneficiary.setBankName(
                 request.getBankName()
         );
+
         beneficiary.setCustomer(customer);
-        beneficiary.setCreatedAt(LocalDateTime.now());
+
+        beneficiary.setCreatedAt(
+                LocalDateTime.now()
+        );
 
         Beneficiary savedBeneficiary =
                 beneficiaryRepository.save(beneficiary);
@@ -67,15 +111,46 @@ public class BeneficiaryService {
         return convertToResponse(savedBeneficiary);
     }
 
-    public List<BeneficiaryResponseDTO> getAllBeneficiaries() {
+    public List<BeneficiaryResponseDTO> getAllBeneficiaries(
+            Authentication authentication) {
 
-        return beneficiaryRepository.findAll()
+        boolean isAdmin =
+                authentication.getAuthorities()
+                        .stream()
+                        .anyMatch(authority ->
+                                authority.getAuthority()
+                                        .equals("ROLE_admin")
+                        );
+
+        if (isAdmin) {
+
+            return beneficiaryRepository.findAll()
+                    .stream()
+                    .map(this::convertToResponse)
+                    .toList();
+        }
+
+        String username = authentication.getName();
+
+        Customer customer =
+                customerRepository
+                        .findByKeycloakUserId(username)
+                        .orElseThrow(() ->
+                                new CustomerNotFoundException(
+                                        "Customer not found"
+                                )
+                        );
+
+        return beneficiaryRepository
+                .findByCustomerId(customer.getId())
                 .stream()
                 .map(this::convertToResponse)
                 .toList();
     }
 
-    public BeneficiaryResponseDTO getBeneficiaryById(Long id) {
+    public BeneficiaryResponseDTO getBeneficiaryById(
+            Long id,
+            Authentication authentication) {
 
         Beneficiary beneficiary =
                 beneficiaryRepository.findById(id)
@@ -85,6 +160,28 @@ public class BeneficiaryService {
                                                 + id
                                 )
                         );
+
+        boolean isAdmin =
+                authentication.getAuthorities()
+                        .stream()
+                        .anyMatch(authority ->
+                                authority.getAuthority()
+                                        .equals("ROLE_admin")
+                        );
+
+        if (!isAdmin) {
+
+            String username = authentication.getName();
+
+            if (!beneficiary.getCustomer()
+                    .getKeycloakUserId()
+                    .equals(username)) {
+
+                throw new BeneficiaryNotFoundException(
+                        "Beneficiary not found with id: " + id
+                );
+            }
+        }
 
         return convertToResponse(beneficiary);
     }

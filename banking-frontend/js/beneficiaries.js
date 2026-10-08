@@ -55,7 +55,7 @@ async function loadBeneficiaries() {
              <td>
 
     ${
-        hasRole("admin") || hasRole("bank-staff")
+        hasRole("admin") || hasRole("bank-staff")|| hasRole("checker")
         ? `
             <button
                 onclick="deleteBeneficiary(${beneficiary.id})"
@@ -186,9 +186,16 @@ async function createBeneficiary() {
             "Beneficiary created successfully!"
         );
 
+document.getElementById("customerId")
+.value = "";
+
+document.getElementById("beneficiaryName").value = "";
+
+        document.getElementById("accountNumber").value = "";
+
+        document.getElementById("bankName").value = "";
 
         loadBeneficiaries();
-
 
     } catch (error) {
 
@@ -199,6 +206,7 @@ async function createBeneficiary() {
         );
 
     }
+
 
 }
 

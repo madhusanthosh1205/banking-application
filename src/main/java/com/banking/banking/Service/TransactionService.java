@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import com.banking.banking.Dto.TransferRequestDTO;
+import org.springframework.security.core.Authentication;
 @Service
 public class TransactionService {
 
@@ -192,10 +193,33 @@ public class TransactionService {
 
         return convertToResponse(savedTransaction);
     }
-    public List<TransactionResponseDTO> getTransactionsByAccount(
-            Long accountId) {
 
-        if (!bankAccountRepository.existsById(accountId)) {
+    public List<TransactionResponseDTO> getTransactionsByAccount(
+            Long accountId,
+            Authentication authentication) {
+
+        BankAccount account =
+                bankAccountRepository.findById(accountId)
+                        .orElseThrow(() ->
+                                new AccountNotFoundException(
+                                        "Account not found with id: " + accountId
+                                )
+                        );
+
+        String username = authentication.getName();
+
+        boolean adminOrMaker =
+                authentication.getAuthorities()
+                        .stream()
+                        .anyMatch(authority ->
+                                authority.getAuthority().equals("ROLE_admin")
+                                        || authority.getAuthority().equals("ROLE_maker")
+                        );
+
+        if (!adminOrMaker &&
+                !account.getCustomer()
+                        .getKeycloakUserId()
+                        .equals(username)) {
 
             throw new AccountNotFoundException(
                     "Account not found with id: " + accountId
@@ -208,7 +232,6 @@ public class TransactionService {
                 .map(this::convertToResponse)
                 .toList();
     }
-
     private String generateTransactionReference() {
 
         return "TXN-" +

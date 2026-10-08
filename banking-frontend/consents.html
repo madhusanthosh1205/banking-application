@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Consent Management</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <div class="navbar">
+
+        <h2>Banking Application</h2>
+
+        <div>
+
+            <a href="index.html">Dashboard</a>
+
+            <a href="customers.html">Customers</a>
+
+            <a href="accounts.html">Accounts</a>
+
+            <a href="transactions.html">Transactions</a>
+
+            <a href="beneficiaries.html">Beneficiaries</a>
+
+            <a href="consents.html">Consents</a>
+
+            <button onclick="logout()">Logout</button>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+
+    <div class="container">
+
+        <h1>Consent Management</h1>
+
+
+        <!-- CREATE CONSENT BUTTON -->
+
+        <button
+            id="addConsentButton"
+            onclick="showConsentForm()">
+
+            Create Consent
+
+        </button>
+
+
+        <!-- CREATE CONSENT FORM -->
+
+        <div
+            id="consentForm"
+            style="display: none;">
+
+            <h2>Create Consent</h2>
+
+
+            <label for="customerId">
+                Customer ID
+            </label>
+
+            <input
+                type="number"
+                id="customerId"
+                placeholder="Enter customer ID">
+
+
+            <label for="accountId">
+                Account ID
+            </label>
+
+            <input
+                type="number"
+                id="accountId"
+                placeholder="Enter account ID">
+
+
+            <label for="purpose">
+                Purpose
+            </label>
+
+            <input
+                type="text"
+                id="purpose"
+                placeholder="Enter consent purpose">
+
+
+            <button onclick="createConsent()">
+                Submit Consent
+            </button>
+
+
+            <button
+                type="button"
+                onclick="showConsentForm()">
+
+                Cancel
+
+            </button>
+
+        </div>
+
+
+        <!-- CONSENT TABLE -->
+
+        <h2>Consent Requests</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Customer</th>
+
+                    <th>Account</th>
+
+                    <th>Purpose</th>
+
+                    <th>Status</th>
+
+                    <th>Created At</th>
+
+                    <th>Reviewed By</th>
+
+                    <th id="actionHeader">
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="consentTableBody">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- EXISTING API FILE -->
+
+    <script src="js/api.js"></script>
+
+
+    <!-- LOGIN CHECK -->
+
+    <script>
+
+        requireLogin();
+
+    </script>
+
+
+    <!-- CONSENT JS -->
+
+    <script src="js/consents.js"></script>
+
+</body>
+
+</html>

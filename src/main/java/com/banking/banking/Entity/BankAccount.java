@@ -35,18 +35,22 @@ public class BankAccount {
             scale = 2
     )
     private BigDecimal balance;
-
+//bank account->customers have many to one relations,that fetching type is lazy...
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "customer_id",
             nullable = false
     )
     private Customer customer;
+
+
     @OneToMany(
             mappedBy = "account",
             cascade = CascadeType.ALL
     )
     private List<Transaction> transactions = new ArrayList<>();
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<Consent> consents = new ArrayList<>();
     public BankAccount() {
     }
 

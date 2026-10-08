@@ -8,7 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -39,19 +39,19 @@ public class BankAccountController {
 
     @GetMapping
     public ResponseEntity<List<AccountResponseDTO>>
-    getAllAccounts() {
+    getAllAccounts(Authentication authentication) {
 
         return ResponseEntity.ok(
-                bankAccountService.getAllAccounts()
+                bankAccountService.getAllAccounts(authentication)
         );
     }
     @GetMapping("/{accountId}")
     public ResponseEntity<AccountResponseDTO> getAccountById(
-            @PathVariable Long accountId)
+            @PathVariable Long accountId, Authentication authentication)
     {
 
         return ResponseEntity.ok(
-                bankAccountService.getAccountById(accountId)
+                bankAccountService.getAccountById(accountId,authentication)
         );
     }
     @DeleteMapping("/{accountId}")

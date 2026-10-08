@@ -1,34 +1,44 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
     <title>Banking Login</title>
+
     <link rel="stylesheet" href="css/style.css">
+
 </head>
 
-<body>
+<body class="login-page">
 
-<h1>Banking Application</h1>
+    <div class="login-container">
 
-<div>
-    <input
-        type="text"
-        id="username"
-        placeholder="Username"
-    >
+        <h1>Banking Application</h1>
 
-    <input
-        type="password"
-        id="password"
-        placeholder="Password"
-    >
+        <input
+            type="text"
+            id="username"
+            placeholder="Username"
+        >
 
-    <button onclick="login()">Login</button>
+        <input
+            type="password"
+            id="password"
+            placeholder="Password"
+        >
 
-    <p id="message"></p>
-</div>
+        <button onclick="login()">
+            Login
+        </button>
 
-<script src="js/api.js"></script>
-<script src="js/login.js"></script>
+        <p id="message"></p>
+
+    </div>
+
+
+    <script src="js/api.js"></script>
+    <script src="js/login.js"></script>
 
 </body>
+
 </html>

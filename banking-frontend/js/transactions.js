@@ -6,21 +6,16 @@ async function loadAccountBalance() {
     const balanceElement =
         document.getElementById("accountBalance");
 
-
     if (!accountId) {
-
         balanceElement.innerText = "";
-
         return;
     }
-
 
     try {
 
         const response = await apiFetch(
             `${API_BASE_URL}/accounts/${accountId}`
         );
-
 
         if (!response.ok) {
 
@@ -30,13 +25,10 @@ async function loadAccountBalance() {
             return;
         }
 
-
         const account = await response.json();
-
 
         balanceElement.innerText =
             `Current Balance: ₹${account.balance}`;
-
 
     } catch (error) {
 
@@ -44,11 +36,8 @@ async function loadAccountBalance() {
 
         balanceElement.innerText =
             "Unable to load balance";
-
     }
-
 }
-
 
 
 async function performTransaction() {
@@ -56,37 +45,28 @@ async function performTransaction() {
     const accountId =
         document.getElementById("accountId").value;
 
-
     const type =
         document.getElementById("transactionType").value;
-
 
     const amount =
         Number(
             document.getElementById("amount").value
         );
 
-
     const description =
         document.getElementById("description").value;
-
 
     const transaction = {
 
         type: type,
-
         amount: amount,
-
         description: description
-
     };
-
 
     console.log(
         "Sending transaction:",
         transaction
     );
-
 
     try {
 
@@ -95,33 +75,24 @@ async function performTransaction() {
             `${API_BASE_URL}/accounts/${accountId}/transactions`,
 
             {
-
                 method: "POST",
 
                 headers: {
-
-                    "Content-Type":
-                        "application/json"
-
+                    "Content-Type": "application/json"
                 },
 
                 body:
                     JSON.stringify(transaction)
-
             }
-
         );
-
 
         const data =
             await response.json();
-
 
         console.log(
             "Backend response:",
             data
         );
-
 
         if (!response.ok) {
 
@@ -133,42 +104,23 @@ async function performTransaction() {
             return;
         }
 
-
         alert(
             `${type} successful!`
         );
 
-
-        // Get the latest balance
         loadAccountBalance();
 
-
-        // Refresh transaction history
         loadTransactions();
-        if (!hasRole("customer")) {
 
-    document.getElementById("transactionControls")
-        .style.display = "none";
-
-    document.getElementById("transferControls")
-        .style.display = "none";
-}
-
-    }
-
-
-    catch (error) {
+    } catch (error) {
 
         console.error(error);
 
         alert(
             "Unable to connect to backend"
         );
-
     }
-
 }
-
 
 
 async function transferMoney() {
@@ -178,14 +130,12 @@ async function transferMoney() {
             "senderAccountId"
         ).value;
 
-
     const receiverAccountId =
         Number(
             document.getElementById(
                 "receiverAccountId"
             ).value
         );
-
 
     const amount =
         Number(
@@ -194,12 +144,10 @@ async function transferMoney() {
             ).value
         );
 
-
     const description =
         document.getElementById(
             "transferDescription"
         ).value;
-
 
     const transfer = {
 
@@ -211,9 +159,7 @@ async function transferMoney() {
 
         description:
             description
-
     };
-
 
     try {
 
@@ -222,27 +168,19 @@ async function transferMoney() {
             `${API_BASE_URL}/accounts/${senderAccountId}/transactions/transfer`,
 
             {
-
                 method: "POST",
 
                 headers: {
-
-                    "Content-Type":
-                        "application/json"
-
+                    "Content-Type": "application/json"
                 },
 
                 body:
                     JSON.stringify(transfer)
-
             }
-
         );
-
 
         const data =
             await response.json();
-
 
         if (!response.ok) {
 
@@ -254,37 +192,26 @@ async function transferMoney() {
             return;
         }
 
-
         alert(
             "Transfer successful!"
         );
 
-
-        // Refresh sender balance
         document.getElementById("accountId").value =
             senderAccountId;
 
         loadAccountBalance();
 
-
         loadTransactions();
 
-
-    }
-
-
-    catch (error) {
+    } catch (error) {
 
         console.error(error);
 
         alert(
             "Unable to connect to backend"
         );
-
     }
-
 }
-
 
 
 async function loadTransactions() {
@@ -294,17 +221,14 @@ async function loadTransactions() {
             "accountId"
         ).value;
 
-
     if (!accountId) {
 
         alert(
-            "Enter Account ID first"
+            "Please enter Account ID first"
         );
 
         return;
-
     }
-
 
     try {
 
@@ -314,25 +238,32 @@ async function loadTransactions() {
 
         );
 
-
-        const transactions =
+        const data =
             await response.json();
 
+        if (!response.ok) {
+
+            alert(
+                data.message ||
+                "Unable to load transaction history"
+            );
+
+            return;
+        }
+
+        const transactions = data;
 
         const tableBody =
             document.getElementById(
                 "transactionTableBody"
             );
 
-
         tableBody.innerHTML = "";
-
 
         transactions.forEach(transaction => {
 
             const row =
                 document.createElement("tr");
-
 
             row.innerHTML = `
 
@@ -362,23 +293,38 @@ async function loadTransactions() {
 
             `;
 
-
             tableBody.appendChild(row);
 
         });
 
-
-    }
-
-
-    catch (error) {
+    } catch (error) {
 
         console.error(error);
 
         alert(
             "Unable to load transactions"
         );
+    }
+}
 
+
+/* ROLE BASED UI */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    if (hasRole("customer")||
+    hasRole("admin") ||
+    hasRole("checker")
+) {
+
+        // Customer can only view transaction history
+        document.getElementById(
+            "transactionControls"
+        ).style.display = "none";
+
+        document.getElementById(
+            "transferControls"
+        ).style.display = "none";
     }
 
-}
+});

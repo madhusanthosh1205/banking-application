@@ -3,9 +3,12 @@ package com.banking.banking.Controller;
 import com.banking.banking.Dto.BeneficiaryRequestDTO;
 import com.banking.banking.Dto.BeneficiaryResponseDTO;
 import com.banking.banking.Service.BeneficiaryService;
+
 import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,10 +28,14 @@ public class BeneficiaryController {
     @PostMapping
     public ResponseEntity<BeneficiaryResponseDTO>
     createBeneficiary(
-            @Valid @RequestBody BeneficiaryRequestDTO request) {
+            @Valid @RequestBody BeneficiaryRequestDTO request,
+            Authentication authentication) {
 
         BeneficiaryResponseDTO response =
-                beneficiaryService.createBeneficiary(request);
+                beneficiaryService.createBeneficiary(
+                        request,
+                        authentication
+                );
 
         return new ResponseEntity<>(
                 response,
@@ -38,20 +45,27 @@ public class BeneficiaryController {
 
     @GetMapping
     public ResponseEntity<List<BeneficiaryResponseDTO>>
-    getAllBeneficiaries() {
+    getAllBeneficiaries(
+            Authentication authentication) {
 
         return ResponseEntity.ok(
-                beneficiaryService.getAllBeneficiaries()
+                beneficiaryService.getAllBeneficiaries(
+                        authentication
+                )
         );
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BeneficiaryResponseDTO>
     getBeneficiaryById(
-            @PathVariable Long id) {
+            @PathVariable Long id,
+            Authentication authentication) {
 
         return ResponseEntity.ok(
-                beneficiaryService.getBeneficiaryById(id)
+                beneficiaryService.getBeneficiaryById(
+                        id,
+                        authentication
+                )
         );
     }
 

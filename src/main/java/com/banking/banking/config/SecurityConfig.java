@@ -21,7 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
-public class SecurityConfig {
+public class SecurityConfig
+{
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
@@ -89,19 +90,63 @@ public class SecurityConfig {
                                 "/api/customers"
                         ).hasRole("admin")
 
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/customers",
+                                        "/api/customers/**"
+                                )
+                                .hasAnyRole("admin", "maker")
+
+                                .requestMatchers(
+                                        HttpMethod.DELETE,
+                                        "/api/customers/**"
+                                )
+                                .hasRole("admin")
                         // Transactions - Customer only
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/accounts/*/transactions",
                                 "/api/accounts/*/transactions/transfer"
-                        ).hasRole("customer")
+                        ).hasAnyRole( "maker")
 
+                                .requestMatchers(HttpMethod.POST, "/api/beneficiaries")
+                                .hasAnyRole("admin", "customer")
+
+                                .requestMatchers(HttpMethod.GET, "/api/beneficiaries", "/api/beneficiaries/**")
+                                .hasAnyRole("admin", "customer")
                         // Delete beneficiary - Admin or Bank Staff
                         .requestMatchers(
                                 HttpMethod.DELETE,
                                 "/api/beneficiaries/**"
-                        ).hasAnyRole("admin", "bank-staff")
+                        ).hasAnyRole("admin", "bank-staff","checker")
+// Consent creation
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "/api/consents"
+                                )
+                                .hasAnyRole("customer", "maker")
 
+// View consents
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/consents",
+                                        "/api/consents/**"
+                                )
+                                .authenticated()
+
+// Approve consent
+                                .requestMatchers(
+                                        HttpMethod.PUT,
+                                        "/api/consents/*/approve"
+                                )
+                                .hasRole("checker")
+
+// Reject consent
+                                .requestMatchers(
+                                        HttpMethod.PUT,
+                                        "/api/consents/*/reject"
+                                )
+                                .hasRole("checker")
                         // Other APIs - authenticated users
                         .requestMatchers("/api/**")
                         .authenticated()

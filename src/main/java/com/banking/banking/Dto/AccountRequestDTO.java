@@ -6,7 +6,8 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
 
-public class AccountRequestDTO {
+public class AccountRequestDTO
+{
 
     @NotNull(message = "Customer ID is required")
     private Long customerId;
@@ -21,19 +22,23 @@ public class AccountRequestDTO {
     public AccountRequestDTO() {
     }
 
-    public Long getCustomerId() {
+    public Long getCustomerId()
+    {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(Long customerId)
+    {
         this.customerId = customerId;
     }
 
-    public AccountType getAccountType() {
+    public AccountType getAccountType()
+    {
         return accountType;
     }
 
-    public void setAccountType(AccountType accountType) {
+    public void setAccountType(AccountType accountType)
+    {
         this.accountType = accountType;
     }
 
@@ -41,7 +46,8 @@ public class AccountRequestDTO {
         return initialBalance;
     }
 
-    public void setInitialBalance(BigDecimal initialBalance) {
+    public void setInitialBalance(BigDecimal initialBalance)
+    {
         this.initialBalance = initialBalance;
     }
 }

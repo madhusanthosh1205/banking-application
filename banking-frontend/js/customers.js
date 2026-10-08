@@ -1,4 +1,8 @@
-async function loadCustomers() {
+if (hasRole("customer")) {
+    window.location.href = "index.html";
+}
+async function loadCustomers() 
+{
 
     try {
 
@@ -40,7 +44,7 @@ async function loadCustomers() {
     `;
 }
 
-            tableBody.appendChild(row);
+    tableBody.appendChild(row);
         });
 
     } catch (error) {
@@ -76,7 +80,9 @@ async function createCustomer() {
 
         email: document.getElementById("email").value,
 
-        phone: document.getElementById("phone").value
+        phone: document.getElementById("phone").value,
+
+ password: document.getElementById("password").value
     };
 
 
@@ -84,7 +90,7 @@ async function createCustomer() {
 
     if (!customer.name ||
         !customer.email ||
-        !customer.phone) {
+        !customer.phone ||  !customer.password) {
 
         alert("Please fill all fields");
 
@@ -128,7 +134,7 @@ async function createCustomer() {
         document.getElementById("email").value = "";
 
         document.getElementById("phone").value = "";
-
+document.getElementById("password").value = "";
 
         // Hide form
 
